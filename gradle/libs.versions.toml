@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.1"
+agp = "8.5.2"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -8,10 +8,10 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.4"
 activityCompose = "1.9.1"
 composeBom = "2024.08.00"
-appcompat = "1.6.1"
-material = "1.10.0"
+appcompat = "1.7.0"
+material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.0"
-minSdk = "21"       # Minimum SDK version
+minSdk = "24"       # Minimum SDK version
 compileSdk = "34"   # Compile SDK version
 targetSdk = "34"    # Target SDK version
 

@@ -1,4 +1,3 @@
 package com.tesusil.template.domain
 
-class MyClass {
-}
+class MyClass
