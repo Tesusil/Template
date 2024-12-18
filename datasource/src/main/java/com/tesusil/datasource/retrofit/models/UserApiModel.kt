@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 data class UserApiModel(
-    @SerializedName("name") private val userName: String,
-    @SerializedName("avatar") private val avatarUrl: String,
-    @SerializedName("id") private val userId: String,
-    @SerializedName("createdAt") private val dateOfCreation: Date
+    @SerializedName("name") val userName: String,
+    @SerializedName("avatar") val avatarUrl: String,
+    @SerializedName("id") val userId: String,
+    @SerializedName("createdAt") val dateOfCreation: Date
 )
 
