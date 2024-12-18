@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tesusil.datasource"
+    namespace = "com.tesusil.template.datasource"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -12,6 +12,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField(
+            type = "String",
+            name = "BASE_URL",
+            value = "\"https://66d8910a37b1cadd80551601.mockapi.io/\""
+        )
     }
 
     buildTypes {
@@ -30,14 +36,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":core"))
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.gson)
+    implementation(libs.okhttp)
 }

@@ -20,8 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Template"
-include(":app")
-include(":core")
-include(":datasource")
-include(":domain")
-include(":resources")
+include(":app", ":core", ":datasource", ":domain", ":resources")
