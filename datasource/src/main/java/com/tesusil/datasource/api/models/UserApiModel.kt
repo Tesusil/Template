@@ -1,8 +1,10 @@
-package com.tesusil.datasource.retrofit.models
+package com.tesusil.datasource.api.models
 
+import androidx.annotation.RestrictTo
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
 data class UserApiModel(
     @SerializedName("name") val userName: String,
     @SerializedName("avatar") val avatarUrl: String,

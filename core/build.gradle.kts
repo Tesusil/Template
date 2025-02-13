@@ -35,10 +35,7 @@ android {
 }
 
 dependencies {
-
     implementation(project(":domain"))
-    implementation(project(":datasource"))
-    implementation(project(":resources"))
 
     api(libs.androidx.core.ktx)
     api(libs.androidx.lifecycle.runtime.ktx)

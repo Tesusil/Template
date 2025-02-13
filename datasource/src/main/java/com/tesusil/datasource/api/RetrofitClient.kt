@@ -1,6 +1,5 @@
-package com.tesusil.datasource.retrofit
+package com.tesusil.datasource.api
 
-import androidx.core.os.BuildCompat
 import com.tesusil.template.datasource.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

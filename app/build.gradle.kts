@@ -54,4 +54,7 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(libs.androidx.junit.ktx)
+    implementation(libs.core.ktx)
+    implementation(libs.core.ktx)
+    implementation(libs.core.ktx)
 }

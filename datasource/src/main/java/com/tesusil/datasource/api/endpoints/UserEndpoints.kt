@@ -1,6 +1,6 @@
-package com.tesusil.datasource.retrofit.endpoints
+package com.tesusil.datasource.api.endpoints
 
-import com.tesusil.datasource.retrofit.models.UserApiModel
+import com.tesusil.datasource.api.models.UserApiModel
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -24,5 +24,5 @@ interface UserEndpoints {
     fun updateUserById(@Path("id") userId: String, @Body newUserData: UserApiModel): Call<UserApiModel>
 
     @DELETE("users/{id}")
-    fun deleteUserById(@Path("id") userId: String)
+    fun deleteUserById(@Path("id") userId: String): Call<UserApiModel>
 }

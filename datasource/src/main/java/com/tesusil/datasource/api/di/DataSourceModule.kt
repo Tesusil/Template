@@ -1,7 +1,7 @@
-package com.tesusil.datasource.retrofit.di
+package com.tesusil.datasource.api.di
 
-import com.tesusil.datasource.retrofit.RetrofitClient
-import com.tesusil.datasource.retrofit.endpoints.UserEndpoints
+import com.tesusil.datasource.api.RetrofitClient
+import com.tesusil.datasource.api.endpoints.UserEndpoints
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
