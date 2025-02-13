@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Template"
 include(":app", ":core", ":datasource", ":domain", ":resources")
-include(":app:home")
