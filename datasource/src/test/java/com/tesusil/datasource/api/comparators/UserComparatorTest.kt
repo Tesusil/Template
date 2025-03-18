@@ -3,7 +3,8 @@ package com.tesusil.datasource.api.comparators
 import com.tesusil.datasource.api.UserTestData
 import com.tesusil.datasource.api.models.UserApiModel
 import com.tesusil.template.domain.models.User
-import junit.framework.TestCase.assertFalse
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
 import java.util.Date
@@ -13,7 +14,7 @@ import java.util.Date
  */
 class UserComparatorTest {
 
-    private val comparator: UserComparator = UserComparator()
+    private val comparator = UserComparator()
 
     @Test
     fun `should return false when domain model is null`() {
@@ -56,7 +57,7 @@ class UserComparatorTest {
         val result = comparator.compare(domainUser, apiUser)
 
         //Then:
-        assert(result)
+        assertTrue(result)
     }
 
     @Test
@@ -107,7 +108,7 @@ class UserComparatorTest {
         val result = comparator.compare(domainUser, apiUser)
 
         //Then:
-        assert(result)
+        assertFalse(result)
     }
 
     @Test
@@ -124,6 +125,175 @@ class UserComparatorTest {
         val result = comparator.compare(domainUser, apiUser)
 
         //Then:
-        assert(result)
+        assertFalse(result)
+    }
+
+    @Test
+    fun `compare should return true when objects have same values`() {
+        // Given
+        val now = Date()
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        val apiModel = UserApiModel(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        // When
+        val result = comparator.compare(user, apiModel)
+        
+        // Then
+        assertTrue(result)
+    }
+    
+    @Test
+    fun `compare should return false when userId is different`() {
+        // Given
+        val now = Date()
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        val apiModel = UserApiModel(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "differentId",
+            dateOfCreation = now
+        )
+        
+        // When
+        val result = comparator.compare(user, apiModel)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when userName is different`() {
+        // Given
+        val now = Date()
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        val apiModel = UserApiModel(
+            userName = "differentName",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        // When
+        val result = comparator.compare(user, apiModel)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when avatarUrl is different`() {
+        // Given
+        val now = Date()
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        val apiModel = UserApiModel(
+            userName = "testUser",
+            avatarUrl = "https://example.com/different.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        // When
+        val result = comparator.compare(user, apiModel)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when dateOfCreation is different`() {
+        // Given
+        val now = Date()
+        val yesterday = Date(now.time - 24 * 60 * 60 * 1000)
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = now
+        )
+        
+        val apiModel = UserApiModel(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = yesterday
+        )
+        
+        // When
+        val result = comparator.compare(user, apiModel)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when user is null`() {
+        // Given
+        val apiModel = UserApiModel(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = Date()
+        )
+        
+        // When
+        val result = comparator.compare(null, apiModel)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when apiModel is null`() {
+        // Given
+        val user = User(
+            userName = "testUser",
+            avatarUrl = "https://example.com/avatar.jpg",
+            userId = "user123",
+            dateOfCreation = Date()
+        )
+        
+        // When
+        val result = comparator.compare(user, null)
+        
+        // Then
+        assertFalse(result)
+    }
+    
+    @Test
+    fun `compare should return false when both objects are null`() {
+        // When
+        val result = comparator.compare(null, null)
+        
+        // Then
+        assertFalse(result)
     }
 }
