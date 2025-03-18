@@ -1,14 +1,9 @@
 package com.tesusil.datasource
 
-import com.tesusil.datasource.api.endpoints.UserEndpoints
 import com.tesusil.datasource.api.exceptions.ApiExceptions
-import com.tesusil.datasource.api.models.UserApiModel
-import com.tesusil.template.domain.Result
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit4.MockKRule
-import io.mockk.mockk
-import io.mockk.verify
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,38 +11,51 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import retrofit2.Call
 import retrofit2.Response
-
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 /**
  * @see OnlineRepository
  */
 @OptIn(ExperimentalCoroutinesApi::class)
+@HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class OnlineRepositoryTest {
 
     @get:Rule
-    val mockkRule = MockKRule(this)
+    val hiltRule = HiltAndroidRule(this)
 
-    @MockK(relaxed = true)
-    lateinit var call: Call<String>
+    @Inject
+    lateinit var testDispatcher: CoroutineDispatcher
 
-    val onlineRepository = object : OnlineRepository {}
-
-    private val dispatcher = StandardTestDispatcher()
-
+    private lateinit var onlineRepository: OnlineRepository
+    private lateinit var call: Call<String>
 
     @Before
     fun setup() {
-        Dispatchers.setMain(dispatcher)
+        hiltRule.inject()
+        Dispatchers.setMain(testDispatcher as StandardTestDispatcher)
+        
+        // Initialize repository
+        onlineRepository = object : OnlineRepository {}
+        
+        // Initialize Call mock
+        call = mockk()
     }
-
 
     @After
     fun tearDown() {
@@ -63,13 +71,13 @@ class OnlineRepositoryTest {
         every { call.execute() } returns errorResponse
 
         //WHEN:
-        val result = onlineRepository.fetch(call, dispatcher)
+        val result = onlineRepository.fetch(call, testDispatcher)
 
         //THEN:
         verify(exactly = 1) { call.execute() }
-        assert(result is Result.Failure)
+        assert(result is com.tesusil.template.domain.Result.Failure)
         assertFalse(result.isSuccessful())
-        assert((result as Result.Failure).exception is ApiExceptions.UnSuccessfulRequest)
+        assert((result as com.tesusil.template.domain.Result.Failure).exception is ApiExceptions.UnSuccessfulRequest)
         assert((result.exception as ApiExceptions.UnSuccessfulRequest).errorCode == errorCode)
     }
 
@@ -80,12 +88,12 @@ class OnlineRepositoryTest {
         every { call.execute() } returns response
 
         //WHEN:
-        val result = onlineRepository.fetch(call, dispatcher)
+        val result = onlineRepository.fetch(call, testDispatcher)
 
         //THEN:
         verify(exactly = 1) { call.execute() }
-        assert(result is Result.Failure)
-        assert((result as Result.Failure).exception is ApiExceptions.NoBodyResponseException)
+        assert(result is com.tesusil.template.domain.Result.Failure)
+        assert((result as com.tesusil.template.domain.Result.Failure).exception is ApiExceptions.NoBodyResponseException)
         assertFalse(result.isSuccessful())
     }
 
@@ -96,12 +104,12 @@ class OnlineRepositoryTest {
         every { call.execute() } throws exception
 
         //When:
-        val result = onlineRepository.fetch(call, dispatcher)
+        val result = onlineRepository.fetch(call, testDispatcher)
 
         //Then:
         verify(exactly = 1) { call.execute() }
-        assert(result is Result.Failure)
-        assert((result as Result.Failure).exception == exception)
+        assert(result is com.tesusil.template.domain.Result.Failure)
+        assert((result as com.tesusil.template.domain.Result.Failure).exception == exception)
     }
 
     @Test
@@ -112,11 +120,11 @@ class OnlineRepositoryTest {
         every { call.execute() } returns response
 
         //WHEN:
-        val result = onlineRepository.fetch(call, dispatcher)
+        val result = onlineRepository.fetch(call, testDispatcher)
 
         //THEN:
         verify(exactly = 1) { call.execute() }
-        assert(result is Result.Success)
-        assert((result as Result.Success).value == data)
+        assert(result is com.tesusil.template.domain.Result.Success)
+        assert((result as com.tesusil.template.domain.Result.Success).value == data)
     }
 }

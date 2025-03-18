@@ -19,9 +19,11 @@ gson = "2.10.1"     # Gson latest stable
 okhttp = "4.11.0"   # OkHttp dependency for Retrofit
 kotlinx-coroutines = "1.7.3"    # Kotlin Coroutines latest stable version
 dagger-hilt = "2.48"
+hilt-android-testing = "2.48"
 junitKtx = "1.2.1"            # Dagger Hilt latest stable version
 mockk = "1.12.4"
 coreKtxVersion = "1.2.0"
+robolectric = "4.10.3"
 
 
 [libraries]
@@ -50,11 +52,14 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 kotlinx-coroutines-test = {group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines"}
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "dagger-hilt" }
+dagger-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt-android-testing" }
+dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "dagger-hilt" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 mockk-core = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockk-kotlin = { group = "io.mockk", name = "mockk-kotlin", version.ref = "mockk" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

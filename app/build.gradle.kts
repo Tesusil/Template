@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    id("kotlin-kapt")
 }
 
 android {
@@ -48,13 +50,21 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    buildToolsVersion = "34.0.0"
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
     implementation(project(":core"))
     implementation(libs.androidx.junit.ktx)
     implementation(libs.core.ktx)
-    implementation(libs.core.ktx)
-    implementation(libs.core.ktx)
+
+    // Hilt
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+    
+    // Hilt tests
+    testImplementation(libs.dagger.hilt.android.testing)
+    kaptTest(libs.dagger.hilt.android.compiler)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    kaptAndroidTest(libs.dagger.hilt.android.compiler)
 }

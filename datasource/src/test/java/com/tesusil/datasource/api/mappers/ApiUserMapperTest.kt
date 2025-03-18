@@ -4,22 +4,37 @@ import com.tesusil.datasource.api.UserTestData
 import com.tesusil.datasource.api.comparators.UserComparator
 import com.tesusil.datasource.api.models.UserApiModel
 import com.tesusil.template.domain.models.User
-import io.mockk.junit4.MockKRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
+import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Assert.assertEquals
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * @see ApiUserMapper
  */
+@HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class ApiUserMapperTest {
 
     @get:Rule
-    val mockkRule = MockKRule(this)
+    val hiltRule = HiltAndroidRule(this)
 
-    private val comparator = UserComparator()
-    private val mapper = ApiUserMapper()
+    @Inject
+    lateinit var mapper: ApiUserMapper
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+    }
 
     @Test
     fun `mapToDomainModel should correctly map UserApiModel to User`() {

@@ -3,18 +3,39 @@ package com.tesusil.datasource.api.comparators
 import com.tesusil.datasource.api.UserTestData
 import com.tesusil.datasource.api.models.UserApiModel
 import com.tesusil.template.domain.models.User
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.time.Instant
 import java.util.Date
+import javax.inject.Inject
 
 /**
  * @see UserComparator
  */
+@HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class UserComparatorTest {
 
-    private val comparator = UserComparator()
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var comparator: UserComparator
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+    }
 
     @Test
     fun `should return false when domain model is null`() {

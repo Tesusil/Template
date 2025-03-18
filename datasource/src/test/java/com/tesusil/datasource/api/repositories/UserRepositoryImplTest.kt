@@ -5,12 +5,14 @@ import com.tesusil.datasource.api.mappers.ApiUserMapper
 import com.tesusil.datasource.api.models.UserApiModel
 import com.tesusil.template.domain.Result
 import com.tesusil.template.domain.models.User
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import dagger.hilt.android.testing.HiltTestApplication
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.junit4.MockKRule
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -24,28 +26,38 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import retrofit2.Call
 import retrofit2.Response
 import java.util.Date
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@HiltAndroidTest
+@Config(application = HiltTestApplication::class)
+@RunWith(RobolectricTestRunner::class)
 class UserRepositoryImplTest {
 
     @get:Rule
-    val mockkRule = MockKRule(this)
+    val hiltRule = HiltAndroidRule(this)
 
-    @MockK
+    @Inject
     lateinit var userEndpoints: UserEndpoints
 
-    @MockK
+    @Inject
     lateinit var userMapper: ApiUserMapper
 
-    private val testDispatcher = StandardTestDispatcher()
+    @Inject
+    lateinit var testDispatcher: CoroutineDispatcher
+
     private lateinit var userRepository: UserRepositoryImpl
 
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
+        hiltRule.inject()
+        Dispatchers.setMain(testDispatcher as StandardTestDispatcher)
         userRepository = UserRepositoryImpl(
             userEndpoints = userEndpoints,
             userMapper = userMapper,
@@ -84,6 +96,10 @@ class UserRepositoryImplTest {
         val flowResult = userRepository.getAllUsers().first()
         assertTrue(flowResult.isSuccessful())
         assertEquals(domainUsers, flowResult.getOrNull())
+        
+        // Verify interactions with dependencies
+        coVerify { userEndpoints.getAllUsers() }
+        coVerify { userMapper.mapToDomainModelList(apiUsers) }
     }
 
     @Test
@@ -106,7 +122,7 @@ class UserRepositoryImplTest {
         every { userMapper.mapToDomainModelList(apiUsers) } returns users
 
         userRepository.refreshAllUsersInformation()
-        testDispatcher.scheduler.advanceUntilIdle()
+        (testDispatcher as StandardTestDispatcher).scheduler.advanceUntilIdle()
 
         // When
         val result = userRepository.getUserInformationById(userId)

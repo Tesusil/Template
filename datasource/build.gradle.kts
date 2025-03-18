@@ -11,7 +11,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.tesusil.datasource.api.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
 
         buildConfigField(
@@ -60,5 +60,10 @@ dependencies {
     testImplementation(libs.mockk.android)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.dagger.hilt.android.testing)
+    testImplementation(libs.robolectric)
+    kaptTest(libs.dagger.hilt.android.compiler)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    kaptAndroidTest(libs.dagger.hilt.android.compiler)
 }
