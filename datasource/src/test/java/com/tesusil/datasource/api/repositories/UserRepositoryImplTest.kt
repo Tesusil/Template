@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -57,7 +58,7 @@ class UserRepositoryImplTest {
     @Before
     fun setup() {
         hiltRule.inject()
-        Dispatchers.setMain(testDispatcher as StandardTestDispatcher)
+        Dispatchers.setMain(testDispatcher)
         userRepository = UserRepositoryImpl(
             userEndpoints = userEndpoints,
             userMapper = userMapper,
@@ -96,7 +97,7 @@ class UserRepositoryImplTest {
         val flowResult = userRepository.getAllUsers().first()
         assertTrue(flowResult.isSuccessful())
         assertEquals(domainUsers, flowResult.getOrNull())
-        
+
         // Verify interactions with dependencies
         coVerify { userEndpoints.getAllUsers() }
         coVerify { userMapper.mapToDomainModelList(apiUsers) }
@@ -108,7 +109,7 @@ class UserRepositoryImplTest {
         val userId = "123"
         val user = createUser(userId)
         val users = listOf(user, createUser("456"))
-        
+
         // Setup initial state in the repository
         val apiUsers = listOf(
             createApiUserModel(userId),
@@ -122,7 +123,7 @@ class UserRepositoryImplTest {
         every { userMapper.mapToDomainModelList(apiUsers) } returns users
 
         userRepository.refreshAllUsersInformation()
-        (testDispatcher as StandardTestDispatcher).scheduler.advanceUntilIdle()
+        (testDispatcher as TestCoroutineDispatcher).scheduler.advanceUntilIdle()
 
         // When
         val result = userRepository.getUserInformationById(userId)
@@ -175,11 +176,11 @@ class UserRepositoryImplTest {
     fun `deleteUserById should return true on success`() = runTest {
         // Given
         val userId = "delete-id"
-        val deleteUserCall = mockk<Call<Unit>>()
-        val deleteUserResponse = Response.success(Unit)
+        val deleteUserEndpointCall = mockk<Call<UserApiModel>>()
+        val deleteUserResponse = Response.success(createApiUserModel(userId))
 
-        every { userEndpoints.deleteUserById(userId) } returns deleteUserCall
-        every { deleteUserCall.execute() } returns deleteUserResponse
+        every { userEndpoints.deleteUserById(userId) } returns deleteUserEndpointCall
+        every { deleteUserEndpointCall.execute() } returns deleteUserResponse
 
         // When
         val result = userRepository.deleteUserById(userId)
@@ -202,4 +203,4 @@ class UserRepositoryImplTest {
         userId = id,
         dateOfCreation = Date()
     )
-} 
+}

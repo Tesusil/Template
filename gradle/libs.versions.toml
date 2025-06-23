@@ -18,12 +18,13 @@ retrofit = "2.9.0"  # Retrofit latest stable
 gson = "2.10.1"     # Gson latest stable
 okhttp = "4.11.0"   # OkHttp dependency for Retrofit
 kotlinx-coroutines = "1.7.3"    # Kotlin Coroutines latest stable version
-dagger-hilt = "2.48"
-hilt-android-testing = "2.48"
+dagger-hilt = "2.50"
+hilt-android-testing = "2.50"
 junitKtx = "1.2.1"            # Dagger Hilt latest stable version
 mockk = "1.12.4"
 coreKtxVersion = "1.2.0"
 robolectric = "4.10.3"
+javapoet = "1.11.1"
 
 
 [libraries]
@@ -60,6 +61,7 @@ mockk-kotlin = { group = "io.mockk", name = "mockk-kotlin", version.ref = "mockk
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+javapoet = { group = "com.squareup", name = "javapoet", version.ref = "javapoet" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

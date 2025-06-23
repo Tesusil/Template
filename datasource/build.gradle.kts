@@ -2,6 +2,11 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    alias(libs.plugins.hilt)
+}
+
+hilt {
+    enableAggregatingTask = false
 }
 
 android {
@@ -55,6 +60,9 @@ dependencies {
 
     api(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    
+    // JavaPoet (required by Dagger Hilt)
+    compileOnly(libs.javapoet)
 
     testImplementation(libs.mockk.core)
     testImplementation(libs.mockk.android)
@@ -62,6 +70,10 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.dagger.hilt.android.testing)
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.core.ktx)
+    testImplementation("androidx.test:runner:1.5.2")
+    testImplementation("androidx.test:rules:1.5.0")
     kaptTest(libs.dagger.hilt.android.compiler)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.dagger.hilt.android.testing)

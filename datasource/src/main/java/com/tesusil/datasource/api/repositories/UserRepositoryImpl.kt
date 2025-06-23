@@ -5,7 +5,6 @@ import com.tesusil.datasource.api.endpoints.UserEndpoints
 import com.tesusil.datasource.api.mappers.ApiUserMapper
 import com.tesusil.datasource.fetch
 import com.tesusil.template.domain.Result
-import com.tesusil.template.domain.map
 import com.tesusil.template.domain.models.User
 import com.tesusil.template.domain.repositories.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher

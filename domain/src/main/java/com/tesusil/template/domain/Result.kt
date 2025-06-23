@@ -33,16 +33,16 @@ sealed class Result<out ResultType>: Serializable {
         }
     }
 
+    fun<MappedType> map(transform: (ResultType) -> MappedType): Result<MappedType> {
+        return when(this) {
+            is Failure -> failure(this.exception)
+            is Success -> success(transform(value))
+        }
+    }
+
     companion object {
         fun <ResultType> success(value: ResultType): Result<ResultType> = Success(value)
 
         fun failure(exception: Exception): Result<Nothing> = Failure(exception)
-    }
-}
-
-fun<Type, MappedType> Result<Type>.map(transform: (Type) -> MappedType): Result<MappedType> {
-    return when(this) {
-        is Result.Failure -> Result.failure(this.exception)
-        is Result.Success -> Result.success(transform(value))
     }
 }

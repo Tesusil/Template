@@ -69,3 +69,4 @@ __pycache__/
 # Windows thumbnail cache
 Thumbs.db
 .idea
+.gradle-kopia

@@ -5,6 +5,10 @@ plugins {
     id("kotlin-kapt")
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 android {
     namespace = "com.tesusil"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -61,6 +65,9 @@ dependencies {
     // Hilt
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+    
+    // JavaPoet (required by Dagger Hilt)
+    compileOnly(libs.javapoet)
     
     // Hilt tests
     testImplementation(libs.dagger.hilt.android.testing)

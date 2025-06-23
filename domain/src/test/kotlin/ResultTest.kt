@@ -1,5 +1,4 @@
 import com.tesusil.template.domain.Result
-import com.tesusil.template.domain.map
 import org.junit.Assert.*
 import org.junit.Test
 
