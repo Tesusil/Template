@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
 }
 
@@ -49,7 +50,8 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
-
+    kapt(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
     api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.coroutines.android)
 
@@ -58,9 +60,10 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.junit.ktx)
     testImplementation(libs.core.ktx)
     testImplementation("androidx.test:runner:1.5.2")
     testImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation(libs.androidx.junit)
+
+    implementation(libs.hilt.core)
 }

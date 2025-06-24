@@ -2,6 +2,7 @@ package com.tesusil.template.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,7 +21,7 @@ fun AppNavGraph(
         modifier = modifier
     ) {
         composable("home") {
-            val viewModel = HomeViewModel(context = navController.context)
+            val viewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(viewModel)
         }
     }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -59,6 +60,9 @@ dependencies {
 
     api(libs.androidx.lifecycle.viewmodel.ktx)
     api(libs.androidx.navigation.compose)
-    api(libs.androidx.hilt.navigation.fragment)
+//    api(libs.androidx.hilt.navigation.fragment)
     api(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.core)
+    kapt(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -53,9 +54,13 @@ android {
 dependencies {
     implementation(project(":core"))
     implementation(project(":home"))
-    implementation(libs.androidx.junit.ktx)
-    implementation(libs.core.ktx)
+    implementation(project(":domain"))
+    implementation(project(":datasource"))
+    implementation(libs.androidx.junit)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.navigation.runtime.android)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.hilt.navigation.fragment)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

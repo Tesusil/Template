@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines.test)
     implementation(libs.mockk.core)
     implementation(libs.junit)
+    implementation(libs.hilt.core)
 }
