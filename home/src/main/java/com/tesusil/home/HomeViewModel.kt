@@ -1,25 +1,25 @@
 package com.tesusil.home
 
-import androidx.lifecycle.viewModelScope
-import com.tesusil.template.core.BaseViewModel
-import com.tesusil.datasource.OnlineRepository
-import com.tesusil.template.domain.repositories.UserRepository
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import com.tesusil.template.core.launchWithIO
+import com.tesusil.template.core.setState
 import com.tesusil.template.domain.models.User
-import com.tesusil.template.domain.Result
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.tesusil.template.domain.repositories.UserRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val onlineRepository: OnlineRepository
-) : BaseViewModel<HomeState, HomeEvent>() {
+class HomeViewModel(
+    context: Context
+    // private val userRepository: UserRepository,
+) : ViewModel() {
 
-    override fun createInitialState(): HomeState = HomeState()
+    private val _state = MutableStateFlow(HomeState())
+    val state: StateFlow<HomeState> = _state
 
-    override fun onEvent(event: HomeEvent) {
+    fun createInitialState(): HomeState = HomeState()
+
+    fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.LoadUsers -> loadUsers()
             is HomeEvent.RefreshUsers -> refreshUsers()
@@ -31,25 +31,25 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadUsers() {
-        setState { copy(isLoading = true, error = null) }
+        _state.setState { copy(isLoading = true, error = null) }
         launchWithIO {
-            userRepository.getAllUsers().collect { result ->
-                result.process(
-                    onSuccess = { users -> setState { copy(users = users, isLoading = false, error = null) } },
-                    onError = { throwable -> setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
-                )
-            }
+//            userRepository.getAllUsers().collect { result ->
+//                result.process(
+//                    onSuccess = { users -> _state.setState { copy(users = users, isLoading = false, error = null) } },
+//                    onError = { throwable -> _state.setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
+//                )
+//            }
         }
     }
 
     private fun refreshUsers() {
-        setState { copy(isLoading = true, error = null) }
+        _state.setState { copy(isLoading = true, error = null) }
         launchWithIO {
-            val result = userRepository.refreshAllUsersInformation()
-            result.process(
-                onSuccess = { loadUsers() },
-                onError = { throwable -> setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
-            )
+//            val result = userRepository.refreshAllUsersInformation()
+//            result.process(
+//                onSuccess = { loadUsers() },
+//                onError = { throwable -> _state.setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
+//            )
         }
     }
 
@@ -58,35 +58,35 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun deleteUser(userId: String) {
-        setState { copy(isLoading = true, error = null) }
+        _state.setState { copy(isLoading = true, error = null) }
         launchWithIO {
-            val result = userRepository.deleteUserById(userId)
-            result.process(
-                onSuccess = { refreshUsers() },
-                onError = { throwable -> setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
-            )
+//            val result = userRepository.deleteUserById(userId)
+//            result.process(
+//                onSuccess = { refreshUsers() },
+//                onError = { throwable -> _state.setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
+//            )
         }
     }
 
     private fun createRandomUser() {
-        setState { copy(isLoading = true, error = null) }
+        _state.setState { copy(isLoading = true, error = null) }
         launchWithIO {
-            val result = userRepository.createRandomUser()
-            result.process(
-                onSuccess = { refreshUsers() },
-                onError = { throwable -> setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
-            )
+//            val result = userRepository.createRandomUser()
+//            result.process(
+//                onSuccess = { refreshUsers() },
+//                onError = { throwable -> _state.setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
+//            )
         }
     }
 
     private fun updateUser(user: User) {
-        setState { copy(isLoading = true, error = null) }
+        _state.setState { copy(isLoading = true, error = null) }
         launchWithIO {
-            val result = userRepository.updateUser(user)
-            result.process(
-                onSuccess = { refreshUsers() },
-                onError = { throwable -> setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
-            )
+//            val result = userRepository.updateUser(user)
+//            result.process(
+//                onSuccess = { refreshUsers() },
+//                onError = { throwable -> _state.setState { copy(isLoading = false, error = throwable as? Exception ?: Exception(throwable)) } }
+//            )
         }
     }
 } 

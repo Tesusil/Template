@@ -8,14 +8,11 @@ import com.tesusil.template.domain.Result
 import com.tesusil.template.domain.models.User
 import com.tesusil.template.domain.repositories.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class UserRepositoryImpl(
-    private val userEndpoints: UserEndpoints,
-    private val userMapper: ApiUserMapper,
-    private val dispatcher: CoroutineDispatcher,
-) : UserRepository, OnlineRepository {
+class UserRepositoryImpl() : UserRepository {
 
     private val userList: MutableStateFlow<Result<List<User>>> = MutableStateFlow(
         Result.success(emptyList())
@@ -24,15 +21,16 @@ class UserRepositoryImpl(
     override suspend fun getAllUsers(): Flow<Result<List<User>>> = userList
 
     override suspend fun refreshAllUsersInformation(): Result<Unit> {
-        val result = fetch(
-            call = userEndpoints.getAllUsers(),
-            dispatcher = dispatcher
-        ).map { userMapper.mapToDomainModelList(it) }
-            .process(
-                onSuccess = { userList.value = Result.success(it) },
-                onError = {}
-            )
+//        val result = fetch(
+//            call = userEndpoints.getAllUsers(),
+//            dispatcher = dispatcher
+//        ).map { userMapper.mapToDomainModelList(it) }
+//            .process(
+//                onSuccess = { userList.value = Result.success(it) },
+//                onError = {}
+//            )
 
+        val result = Result.Success<Unit>(Unit)
         return result.toUnit()
     }
 
@@ -46,28 +44,31 @@ class UserRepositoryImpl(
     }
 
     override suspend fun createRandomUser(): Result<String> {
-        return fetch(
-            call = userEndpoints.createNewRandomUser(),
-            dispatcher = dispatcher
-        ).map {
-            it.userId
-        }
+//        return fetch(
+//            call = userEndpoints.createNewRandomUser(),
+//            dispatcher = dispatcher
+//        ).map {
+//            it.userId
+//        }
+        return Result.Success<String>("")
     }
 
     override suspend fun updateUser(updatedUser: User): Result<String> {
-        val dataModelUser = userMapper.mapToDataModel(updatedUser)
-        return fetch(
-            call = userEndpoints.updateUserById(updatedUser.userId, dataModelUser),
-            dispatcher = dispatcher
-        ).map {
-            updatedUser.userId
-        }
+//        val dataModelUser = userMapper.mapToDataModel(updatedUser)
+//        return fetch(
+//            call = userEndpoints.updateUserById(updatedUser.userId, dataModelUser),
+//            dispatcher = dispatcher
+//        ).map {
+//            updatedUser.userId
+//        }
+        return Result.Success<String>("")
     }
 
     override suspend fun deleteUserById(userId: String): Result<Boolean> {
-        return fetch(
-            call = userEndpoints.deleteUserById(userId),
-            dispatcher = dispatcher
-        ).map { true }
+//        return fetch(
+//            call = userEndpoints.deleteUserById(userId),
+//            dispatcher = dispatcher
+//        ).map { true }
+        return Result.Success<Boolean>(true)
     }
 }

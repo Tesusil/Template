@@ -4,7 +4,7 @@ import com.tesusil.datasource.api.models.UserApiModel
 import com.tesusil.template.domain.Mapper
 import com.tesusil.template.domain.models.User
 
-class ApiUserMapper: Mapper<UserApiModel, User> {
+class ApiUserMapper() : Mapper<UserApiModel, User> {
     override fun mapToDomainModel(dataModel: UserApiModel): User {
         return User(
             userName = dataModel.userName,

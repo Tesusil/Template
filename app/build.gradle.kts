@@ -1,17 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt)
     id("kotlin-kapt")
-}
-
-hilt {
-    enableAggregatingTask = false
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.tesusil"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tesusil.template"
@@ -46,9 +42,6 @@ android {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -59,19 +52,10 @@ android {
 
 dependencies {
     implementation(project(":core"))
+    implementation(project(":home"))
     implementation(libs.androidx.junit.ktx)
     implementation(libs.core.ktx)
-
-    // Hilt
-    implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
-    
-    // JavaPoet (required by Dagger Hilt)
-    compileOnly(libs.javapoet)
-    
-    // Hilt tests
-    testImplementation(libs.dagger.hilt.android.testing)
-    kaptTest(libs.dagger.hilt.android.compiler)
-    androidTestImplementation(libs.dagger.hilt.android.testing)
-    kaptAndroidTest(libs.dagger.hilt.android.compiler)
+    implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.fragment)
 }

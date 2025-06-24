@@ -1,11 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.tesusil.home"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24

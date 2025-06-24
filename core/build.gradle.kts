@@ -2,16 +2,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
-    alias(libs.plugins.hilt)
-}
-
-hilt {
-    enableAggregatingTask = false
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.tesusil.template.core"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdk = 35
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
@@ -61,10 +57,8 @@ dependencies {
     api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.coroutines.android)
 
-    // Dagger Hilt
-    api(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
-    
-    // JavaPoet (required by Dagger Hilt)
-    compileOnly(libs.javapoet)
+    api(libs.androidx.lifecycle.viewmodel.ktx)
+    api(libs.androidx.navigation.compose)
+    api(libs.androidx.hilt.navigation.fragment)
+    api(libs.androidx.hilt.navigation.compose)
 }
